@@ -37,14 +37,14 @@ It wrote the code, ran away, and now the game is unplayable.
 
 - [x] Fixed winning game screenshot
 
-![Fixed winning game](images/fixed-game-demo.png)
+![Fixed winning game](image.png)
 
 ## Challenge 1: Advanced Edge-Case Testing
 
 - [x] Added pytest coverage for game logic edge cases
 - [x] Added a regression test for numeric string comparison
 
-![Pytest passing results](images/pytest-results.png)
+![Pytest passing results](image-2.png)
 
 ## Stretch Features
 
