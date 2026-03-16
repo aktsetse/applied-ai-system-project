@@ -40,11 +40,11 @@ The game run just fine when I run it. However, after entering my guess, it kept 
 ## 4. What did you learn about Streamlit and state?
 
 - In your own words, explain why the secret number kept changing in the original app.
-- The secret number can seem to change when Streamlit reruns the script and the value is not handled carefully in session state. Since Streamlit re-executes the app often, any value that is not stored the right way can act unpredictably. That made me realize state management matters a lot even in a small app.
+- The secret number kept changing because Streamlit reruns the script after user actions, and values that are not managed correctly in `st.session_state` can get reset or handled inconsistently. At first, it looked like the UI was working, but the game logic underneath was not stable. This taught me that in Streamlit, state is what makes the app feel consistent between clicks.
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
-- I would say Streamlit reruns are like the app rereading the whole script every time the user interacts with something. Session state is what helps the app remember important values like the secret number, score, and attempts between those reruns. Without session state, the game would keep forgetting where it was.
+- I would explain reruns as Streamlit running the script again every time a user types, clicks, or changes something on the page. Session state is the memory that keeps important values like the secret number, score, and attempts from disappearing during those reruns. Without session state, the app would act like it was starting over all the time.
 - What change did you make that finally gave the game a stable secret number?
-- The main change was making sure the secret number stayed in `st.session_state.secret` and was reused during the game instead of getting replaced during normal play. That gave the app one stable number to compare guesses against. It made the behavior much easier to understand and debug.
+- The main change was keeping the secret number in `st.session_state.secret` and making sure the app always compared guesses against that stored value. I also removed the mixed string and integer handling that made the comparison logic unreliable on some turns. That made the game behave more predictably and stopped the guessing logic from acting random.
 
 ---
 
@@ -52,8 +52,8 @@ The game run just fine when I run it. However, after entering my guess, it kept 
 
 - What is one habit or strategy from this project that you want to reuse in future labs or projects?
   - This could be a testing habit, a prompting strategy, or a way you used Git.
-- One habit I want to keep using is testing the app from the user side before trusting the code. Running the app and trying obvious edge cases helped me find bugs faster than just reading the file. I also want to keep using AI to narrow down where a bug might be before I start editing.
+- One habit I want to keep using is testing the app from the user side before trusting the code. Running the app and trying obvious edge cases helped me find bugs faster than just reading the file. I also want to keep using AI to narrow down where a bug might be before I start editing, but only after I check the actual behavior myself.
 - What is one thing you would do differently next time you work with AI on a coding task?
-- Next time, I would verify the AI suggestions earlier and more often. I learned that even if the code looks polished, the logic can still be wrong. I would rather test each small change right away than wait until the end.
+- Next time, I would verify the AI suggestions earlier and more often. One bad suggestion I had to reject was the idea that the app was mostly fine just because it launched and looked playable. I now know I need to treat AI suggestions like draft ideas, not final answers, and test each one before trusting it.
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
-- This project changed the way I think about AI-generated code because now I see that working code is not the same as correct code. AI can be really helpful, but I still need to test everything carefully and think through the logic myself.
+- This project changed the way I think about AI-generated code because now I see that code can run without actually being correct. AI was useful for brainstorming and debugging, but I still had to stay in control, reject misleading suggestions, and verify the final behavior myself.
