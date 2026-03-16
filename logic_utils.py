@@ -1,6 +1,12 @@
 def get_range_for_difficulty(difficulty: str):
     """Return (low, high) inclusive range for a given difficulty."""
-    raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
+    if difficulty == "Easy":
+        return 1, 20
+    if difficulty == "Normal":
+        return 1, 100
+    if difficulty == "Hard":
+        return 1, 50
+    return 1, 100
 
 
 def parse_guess(raw: str):
@@ -9,7 +15,18 @@ def parse_guess(raw: str):
 
     Returns: (ok: bool, guess_int: int | None, error_message: str | None)
     """
-    raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
+    if raw is None or raw == "":
+        return False, None, "Enter a guess."
+
+    try:
+        if "." in raw:
+            value = int(float(raw))
+        else:
+            value = int(raw)
+    except Exception:
+        return False, None, "That is not a number."
+
+    return True, value, None
 
 
 def check_guess(guess, secret):
@@ -18,9 +35,36 @@ def check_guess(guess, secret):
 
     outcome examples: "Win", "Too High", "Too Low"
     """
-    raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
+    try:
+        # FIX: AI-assisted debugging moved this logic here and normalized both values to ints.
+        guess_value = int(guess)
+        secret_value = int(secret)
+    except (TypeError, ValueError):
+        return "Invalid", "Guess and secret must be numbers."
+
+    if guess_value == secret_value:
+        return "Win", "Correct!"
+
+    if guess_value > secret_value:
+        # FIX: AI review caught that the original high/low hint messages were reversed.
+        return "Too High", "Go LOWER!"
+    return "Too Low", "Go HIGHER!"
 
 
 def update_score(current_score: int, outcome: str, attempt_number: int):
     """Update score based on outcome and attempt number."""
-    raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
+    if outcome == "Win":
+        points = 100 - 10 * (attempt_number + 1)
+        if points < 10:
+            points = 10
+        return current_score + points
+
+    if outcome == "Too High":
+        if attempt_number % 2 == 0:
+            return current_score + 5
+        return current_score - 5
+
+    if outcome == "Too Low":
+        return current_score - 5
+
+    return current_score
