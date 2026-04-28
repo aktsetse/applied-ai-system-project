@@ -1,0 +1,10 @@
+When a guess is too high, think about the midpoint of the remaining range.
+When a guess is too low, eliminate numbers below that guess.
+Divide the range in half to find the next guess more efficiently.
+Use previous guesses to avoid repeating the same interval.
+Prime numbers are harder to pinpoint, so focus on even/odd patterns first.
+Perfect squares cluster near other squares, but many numbers are not perfect squares.
+If you know the secret is not even, remove half the candidates immediately.
+A good strategy is to alternate between high and low guesses around the midpoint.
+When you are close, narrow the range by one step instead of jumping too far.
+Keep track of your guess history to avoid repeating mistakes.

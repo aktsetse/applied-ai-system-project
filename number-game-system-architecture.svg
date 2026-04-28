@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2280" height="1260" viewBox="0 0 2280 1260" role="img" aria-labelledby="title desc">
+  <title id="title">AI Number Story Coach System Architecture</title>
+  <desc id="desc">Architecture diagram for the number guessing game with runtime game flow, AI story and safety guardrails, persistence, testing, and human validation loop.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#29465b" />
+    </marker>
+    <style>
+      .bg { fill: #f4f7fb; }
+      .frame { fill: #ffffff; stroke: #d9e2ec; stroke-width: 2; }
+      .lane { fill: #fbfcfe; stroke: #d9e2ec; stroke-width: 2; }
+      .input { fill: #eef7f1; stroke: #4f8c73; stroke-width: 2; }
+      .data { fill: #edf4fb; stroke: #4c79a8; stroke-width: 2; }
+      .process { fill: #fff5e6; stroke: #c97f19; stroke-width: 2; }
+      .decision { fill: #f8eef5; stroke: #a95587; stroke-width: 2; }
+      .output { fill: #f1eefb; stroke: #7259c2; stroke-width: 2; }
+      .review { fill: #f7f3ea; stroke: #9d7b42; stroke-width: 2; }
+      .title { font: 700 34px Arial, sans-serif; fill: #17212b; }
+      .subtitle { font: 400 17px Arial, sans-serif; fill: #566473; }
+      .section { font: 700 22px Arial, sans-serif; fill: #17212b; }
+      .label { font: 700 18px Arial, sans-serif; fill: #17212b; }
+      .meta { font: 600 13px Arial, sans-serif; fill: #5c6a79; letter-spacing: 1.1px; }
+      .body { font: 400 15px Arial, sans-serif; fill: #243240; }
+      .small { font: 400 13px Arial, sans-serif; fill: #586574; }
+      .tiny { font: 400 12px Arial, sans-serif; fill: #6a7784; }
+      .solid { stroke: #29465b; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; fill: none; marker-end: url(#arrow); }
+      .dashed { stroke: #6b7c8d; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 10 8; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="2280" height="1260" />
+  <rect class="frame" x="38" y="40" width="2204" height="1160" rx="28" />
+
+  <text class="title" x="88" y="98">AI Number Story Coach Game</text>
+  <text class="subtitle" x="88" y="132">Wordle-inspired gameplay pipeline with local facts, AI guidance, safety checks, persistence, testing, and human review.</text>
+
+  <rect class="lane" x="78" y="170" width="2124" height="690" rx="22" />
+  <text class="section" x="108" y="210">Runtime Gameplay and AI Flow</text>
+  <text class="small" x="108" y="236">Solid arrows show: input → validation → state update → AI story generation → safety check → UI output and persistence.</text>
+
+  <rect class="lane" x="78" y="892" width="2124" height="270" rx="22" />
+  <text class="section" x="108" y="932">Human Oversight and Reliability Validation</text>
+  <text class="small" x="108" y="958">Dashed arrows show testing and review feedback loops that refine facts, guardrails, scoring, and UX behavior.</text>
+
+  <rect class="input" x="110" y="316" width="220" height="188" rx="18" />
+  <text class="meta" x="136" y="346">INPUT</text>
+  <text class="label" x="136" y="378">Player Guess</text>
+  <text class="body" x="136" y="410">Guess form submission</text>
+  <text class="body" x="136" y="434">from Play tab with</text>
+  <text class="body" x="136" y="458">difficulty and attempts.</text>
+  <text class="small" x="136" y="484">`app.py` (Streamlit UI)</text>
+
+  <rect class="process" x="370" y="316" width="270" height="188" rx="18" />
+  <text class="meta" x="396" y="346">STEP 1</text>
+  <text class="label" x="396" y="378">Input Validator</text>
+  <text class="body" x="396" y="410">Parses guess, checks range,</text>
+  <text class="body" x="396" y="434">rejects invalid/repeated values,</text>
+  <text class="body" x="396" y="458">and protects attempts counter.</text>
+  <text class="small" x="396" y="484">`evaluate_guess_submission()`</text>
+
+  <rect class="process" x="680" y="316" width="280" height="188" rx="18" />
+  <text class="meta" x="706" y="346">STEP 2</text>
+  <text class="label" x="706" y="378">Game State Engine</text>
+  <text class="body" x="706" y="410">Computes feedback badge,</text>
+  <text class="body" x="706" y="434">updates history/range/progress,</text>
+  <text class="body" x="706" y="458">and decides win/loss status.</text>
+  <text class="small" x="706" y="484">`logic_utils.py`</text>
+
+  <rect class="data" x="1000" y="316" width="280" height="188" rx="18" />
+  <text class="meta" x="1026" y="346">STEP 3</text>
+  <text class="label" x="1026" y="378">Local Fact Retriever</text>
+  <text class="body" x="1026" y="410">Uses special facts first,</text>
+  <text class="body" x="1026" y="434">then generic number facts</text>
+  <text class="body" x="1026" y="458">for guesses 1 through 500.</text>
+  <text class="small" x="1026" y="484">`numberFacts.js` + `get_number_fact()`</text>
+
+  <rect class="process" x="1320" y="316" width="290" height="188" rx="18" />
+  <text class="meta" x="1346" y="346">STEP 4</text>
+  <text class="label" x="1346" y="378">AI Story Coach Agent</text>
+  <text class="body" x="1346" y="410">Builds structured JSON story:</text>
+  <text class="body" x="1346" y="434">fact + direction + range advice +</text>
+  <text class="body" x="1346" y="458">safe clue + next strategy.</text>
+  <text class="small" x="1346" y="484">`get_ai_number_story()`</text>
+
+  <rect class="decision" x="1650" y="296" width="330" height="228" rx="18" />
+  <text class="meta" x="1676" y="326">STEP 5</text>
+  <text class="label" x="1676" y="358">Safety + Reliability Check</text>
+  <text class="body" x="1676" y="390">Validates schema, direction,</text>
+  <text class="body" x="1676" y="414">and non-reveal guardrails;</text>
+  <text class="body" x="1676" y="438">blocks "the answer is" leaks;</text>
+  <text class="body" x="1676" y="462">uses deterministic fallback</text>
+  <text class="body" x="1676" y="486">when AI fails or is unsafe.</text>
+  <text class="small" x="1676" y="510">`validate_story()` + fallback</text>
+
+  <rect class="output" x="1020" y="572" width="960" height="170" rx="18" />
+  <text class="meta" x="1048" y="602">OUTPUT</text>
+  <text class="label" x="1048" y="634">Updated UI + AI Story Card + Game Signals</text>
+  <text class="body" x="1048" y="662">Play tab shows guess tiles, story card, attempts/progress, range, win/loss notes, and score updates.</text>
+  <text class="body" x="1048" y="686">History tab and Stats tab reflect persisted results after each completed round.</text>
+  <text class="small" x="1048" y="712">`app.py` render path</text>
+
+  <rect class="data" x="130" y="572" width="360" height="170" rx="18" />
+  <text class="meta" x="156" y="602">DATA SOURCE</text>
+  <text class="label" x="156" y="634">Persistence Layer</text>
+  <text class="body" x="156" y="662">Stores stats, game history,</text>
+  <text class="body" x="156" y="686">and theme preference.</text>
+  <text class="small" x="156" y="712">`.game_stats.json`, `.game_history.json`, `.ui_prefs.json`</text>
+
+  <rect class="process" x="530" y="572" width="450" height="170" rx="18" />
+  <text class="meta" x="556" y="602">OBSERVABILITY</text>
+  <text class="label" x="556" y="634">Logging and Runtime Events</text>
+  <text class="body" x="556" y="662">Logs game start, difficulty, guesses, invalid/repeated events, AI checks, fallback usage, theme/tab changes.</text>
+  <text class="body" x="556" y="686">Supports debugging and reliability review.</text>
+  <text class="small" x="556" y="712">Python logger in `app.py` and `ai_utils.py`</text>
+
+  <path class="solid" d="M 330 410 L 370 410" />
+  <path class="solid" d="M 640 410 L 680 410" />
+  <path class="solid" d="M 960 410 L 1000 410" />
+  <path class="solid" d="M 1280 410 L 1320 410" />
+  <path class="solid" d="M 1610 410 L 1650 410" />
+  <path class="solid" d="M 1815 524 L 1815 572" />
+
+  <path class="solid" d="M 1160 572 L 900 572 L 900 504" />
+  <path class="solid" d="M 760 572 L 760 504" />
+  <path class="solid" d="M 280 572 L 280 504" />
+
+  <path class="solid" d="M 490 656 L 530 656" />
+  <path class="solid" d="M 980 656 L 1020 656" />
+
+  <rect class="review" x="120" y="986" width="350" height="122" rx="18" />
+  <text class="meta" x="146" y="1016">TESTING</text>
+  <text class="label" x="146" y="1048">Automated Test Suite</text>
+  <text class="body" x="146" y="1074">`pytest` validates range rules, repeat/invalid handling,</text>
+  <text class="body" x="146" y="1098">win/loss logic, AI safety, and fallback behavior.</text>
+
+  <rect class="review" x="520" y="986" width="370" height="122" rx="18" />
+  <text class="meta" x="546" y="1016">HUMAN CHECKPOINT</text>
+  <text class="label" x="546" y="1048">Player / Reviewer Validation</text>
+  <text class="body" x="546" y="1074">Checks AI story usefulness, readability, and UX quality</text>
+  <text class="body" x="546" y="1098">across Play, History, Stats, and themes.</text>
+
+  <rect class="review" x="940" y="986" width="370" height="122" rx="18" />
+  <text class="meta" x="966" y="1016">ARTIFACTS</text>
+  <text class="label" x="966" y="1048">Docs and Diagram Assets</text>
+  <text class="body" x="966" y="1074">README, architecture diagrams, and implementation notes</text>
+  <text class="body" x="966" y="1098">record decisions and guardrails.</text>
+
+  <rect class="review" x="1360" y="986" width="760" height="122" rx="18" />
+  <text class="meta" x="1386" y="1016">IMPROVEMENT LOOP</text>
+  <text class="label" x="1386" y="1048">Refine Facts, Guardrails, Scoring, and UI</text>
+  <text class="body" x="1386" y="1074">Testing and human findings update number fact quality, AI prompts, safety checks, scoring rules, and front-end design.</text>
+
+  <path class="dashed" d="M 1580 742 L 1580 972 L 710 972 L 710 986" />
+  <path class="dashed" d="M 300 986 L 300 972 L 1360 972" />
+  <path class="dashed" d="M 705 986 L 705 972 L 1360 972" />
+  <path class="dashed" d="M 1125 986 L 1125 972 L 1360 972" />
+  <path class="dashed" d="M 1750 986 L 1750 742 L 1160 742" />
+
+  <circle cx="120" cy="1136" r="7" fill="#29465b" />
+  <text class="tiny" x="138" y="1141">Runtime data flow</text>
+  <circle cx="282" cy="1136" r="7" fill="#ffffff" stroke="#6b7c8d" stroke-width="2.5" />
+  <text class="tiny" x="300" y="1141">Human and testing feedback loop</text>
+</svg>

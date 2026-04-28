@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">AI Number Story Coach Architecture (Dark Board)</title>
+  <desc id="desc">Dark-themed architecture board with pipeline blocks and review loop similar to game system dashboards.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#d8dee9" />
+    </marker>
+    <style>
+      .bg { fill:#1a1d24; }
+      .frame { fill:#20242c; stroke:#3a404c; stroke-width:2; }
+      .group { fill:#271c27; stroke:#5a415e; stroke-width:2; }
+      .nodeA { fill:#27566d; stroke:#8cc6dd; stroke-width:2; }
+      .nodeB { fill:#2c4a7b; stroke:#8ba9d6; stroke-width:2; }
+      .nodeC { fill:#5f3c22; stroke:#c89a70; stroke-width:2; }
+      .nodeD { fill:#5d2b69; stroke:#b28ac0; stroke-width:2; }
+      .nodeE { fill:#2d6938; stroke:#88c699; stroke-width:2; }
+      .nodeF { fill:#6c3526; stroke:#d49a8a; stroke-width:2; }
+      .title { font:700 30px Arial,sans-serif; fill:#ecf2ff; }
+      .subtitle { font:400 14px Arial,sans-serif; fill:#bfc9d8; }
+      .label { font:700 16px Arial,sans-serif; fill:#eef3ff; }
+      .body { font:400 12px Arial,sans-serif; fill:#d5deed; }
+      .small { font:600 11px Arial,sans-serif; fill:#aab4c5; letter-spacing:0.8px; }
+      .line { stroke:#d0d8e8; stroke-width:2.4; fill:none; marker-end:url(#arrow); stroke-linecap:round; stroke-linejoin:round; }
+      .dash { stroke:#9ea8ba; stroke-width:2; fill:none; marker-end:url(#arrow); stroke-dasharray:8 7; stroke-linecap:round; stroke-linejoin:round; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="900"/>
+  <rect class="frame" x="20" y="20" width="1560" height="860" rx="20"/>
+
+  <text class="title" x="50" y="68">AI Number Story Coach • Dark Pipeline View</text>
+  <text class="subtitle" x="50" y="94">A compact runtime pipeline with guardrails, local facts, persistence, and testing/reviewer loop.</text>
+
+  <rect class="nodeA" x="50" y="160" width="170" height="90" rx="12"/>
+  <text class="label" x="70" y="196">Player Guess</text>
+  <text class="body" x="70" y="218">Input from Play tab</text>
+
+  <rect class="nodeB" x="270" y="160" width="190" height="90" rx="12"/>
+  <text class="label" x="290" y="196">Validator</text>
+  <text class="body" x="290" y="218">Type/range/repeat checks</text>
+
+  <rect class="nodeC" x="510" y="160" width="210" height="90" rx="12"/>
+  <text class="label" x="530" y="196">State Engine</text>
+  <text class="body" x="530" y="218">Tiles, attempts, range, score</text>
+
+  <rect class="nodeD" x="770" y="160" width="200" height="90" rx="12"/>
+  <text class="label" x="790" y="196">Local Facts</text>
+  <text class="body" x="790" y="218">Special-first retrieval</text>
+
+  <rect class="nodeB" x="1020" y="160" width="210" height="90" rx="12"/>
+  <text class="label" x="1040" y="196">AI Story Coach</text>
+  <text class="body" x="1040" y="218">Structured JSON hint</text>
+
+  <rect class="nodeF" x="1280" y="150" width="260" height="110" rx="12"/>
+  <text class="label" x="1300" y="188">Safety Checker</text>
+  <text class="body" x="1300" y="210">Schema + direction + no reveal</text>
+  <text class="body" x="1300" y="230">Fallback on failure</text>
+
+  <rect class="nodeE" x="1280" y="330" width="260" height="110" rx="12"/>
+  <text class="label" x="1300" y="368">Output Generation</text>
+  <text class="body" x="1300" y="390">UI cards, tabs, score, result</text>
+  <text class="body" x="1300" y="410">Play / History / Stats</text>
+
+  <rect class="nodeE" x="220" y="330" width="250" height="110" rx="12"/>
+  <text class="label" x="240" y="368">Persistence</text>
+  <text class="body" x="240" y="390">history + stats + theme prefs</text>
+  <text class="body" x="240" y="410">json files</text>
+
+  <rect class="nodeC" x="520" y="330" width="260" height="110" rx="12"/>
+  <text class="label" x="540" y="368">Logs</text>
+  <text class="body" x="540" y="390">game started, guesses, AI blocked,</text>
+  <text class="body" x="540" y="410">fallback used, theme/tab changed</text>
+
+  <rect class="group" x="720" y="500" width="600" height="260" rx="14"/>
+  <text class="small" x="742" y="528">TESTING AND REVIEW LOOP</text>
+
+  <rect class="nodeF" x="760" y="550" width="170" height="80" rx="10"/>
+  <text class="label" x="782" y="582">Pytest</text>
+  <text class="body" x="782" y="604">Reliability tests</text>
+
+  <rect class="nodeF" x="760" y="650" width="170" height="80" rx="10"/>
+  <text class="label" x="782" y="682">Safety Suite</text>
+  <text class="body" x="782" y="704">Schema + no-leak checks</text>
+
+  <rect class="nodeF" x="960" y="600" width="190" height="90" rx="10"/>
+  <text class="label" x="980" y="636">Human Review</text>
+  <text class="body" x="980" y="658">Inspect outputs and UX</text>
+
+  <rect class="nodeB" x="1180" y="600" width="120" height="90" rx="10"/>
+  <text class="label" x="1198" y="636">Improve</text>
+  <text class="body" x="1198" y="658">Rules/UI</text>
+
+  <path class="line" d="M 220 205 L 270 205"/>
+  <path class="line" d="M 460 205 L 510 205"/>
+  <path class="line" d="M 720 205 L 770 205"/>
+  <path class="line" d="M 970 205 L 1020 205"/>
+  <path class="line" d="M 1230 205 L 1280 205"/>
+  <path class="line" d="M 1410 260 L 1410 330"/>
+
+  <path class="line" d="M 1360 440 L 470 440"/>
+  <path class="line" d="M 470 440 L 470 385"/>
+  <path class="line" d="M 1360 440 L 780 440"/>
+  <path class="line" d="M 780 440 L 780 385"/>
+
+  <path class="dash" d="M 1410 440 L 1410 540 L 1140 540 L 1140 600"/>
+  <path class="dash" d="M 845 630 L 960 630"/>
+  <path class="dash" d="M 845 690 L 960 690"/>
+  <path class="dash" d="M 1150 645 L 1180 645"/>
+  <path class="dash" d="M 1240 600 L 1240 260 L 1280 260"/>
+
+  <text class="subtitle" x="50" y="840">Runtime lines: solid • Feedback/test loop: dashed</text>
+</svg>

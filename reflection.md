@@ -1,59 +1,16 @@
-# 💭 Reflection: Game Glitch Investigator
+# Reflection and Ethics
 
-Answer each question in 3 to 5 sentences. Be specific and honest about what actually happened while you worked. This is about your process, not trying to sound perfect.
+## Limitations and Biases
+My system is reliable for game logic, but it still has limits. The AI hint quality depends on prompt behavior and available context, so hints can sometimes feel generic. The local number facts are deterministic, but they still reflect my design choices about what counts as a "special" fact, which introduces selection bias.
 
-## 1. What was broken when you started?
+## Misuse Risks and Prevention
+A possible misuse is trying to force the AI to reveal the secret number or produce unsafe/confusing hints. I reduce this risk with guardrails: schema checks, direction checks, answer-leak checks, and deterministic fallback hints. I also keep the game playable when AI fails, so users do not depend on unstable model outputs.
 
-- What did the game look like the first time you ran it?
-The game run just fine when I run it. However, after entering my guess, it kept asking me to go higher even when I entered a hundred. Also, it did similar for my second try and kept asking me to go lower till I entered 0. Looks like the limit set doesn't work. Even when I entered a value out of range, it didn't signal me. 
+## Reliability Surprise
+What surprised me most was how often reliability issues came from integration details, not core logic. For example, UI/theme CSS collisions and AI response formatting were bigger reliability risks than basic win/loss logic. The safety validator and fallback system made the app much more stable during these edge cases.
 
-- List at least two concrete bugs you noticed at the start  
-  (for example: "the secret number kept changing" or "the hints were backwards").
-  Kept asking me to go higher after entering the highest possible value(100).
-  Didn't let me start a new game even when I guessed the number right.
+## Future Improvements
+I would improve this system by adding richer retrieval documents, a stronger quantitative quality metric for hint usefulness, and an in-app evaluator dashboard so reliability trends are visible over time. I would also add optional multiplayer or challenge modes while keeping the same safety checks.
 
----
-
-## 2. How did you use AI as a teammate?
-
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
-- I used Claude as the AI tool on this project. I used it like a teammate to inspect the code, suggest where bugs might be, and help me test whether the app behavior matched the code. It was useful for narrowing down likely problem areas faster than I could on my own.
-- Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
-- One correct AI suggestion was that the comparison logic in `check_guess()` was wrong. The AI suggested that the code was returning the wrong hint direction, because a guess above the secret should tell the player to go lower, not higher. That suggestion was correct. I verified it by looking at the code in `check_guess()` and then running the game and entering guesses like 100, where the app clearly gave the wrong feedback.
-- Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
-- One incorrect or misleading AI suggestion was the idea that the app was basically fine just because it launched and let me play. That was misleading because the app still had logic bugs even though there were no startup errors. I verified that by testing the game directly and also by checking the code, where I found the reversed hint logic and the broken new game reset behavior.
-
----
-
-## 3. Debugging and testing your fixes
-
-- How did you decide whether a bug was really fixed?
-- I decided a bug was really fixed only after I tested it in the app and saw the correct behavior more than once. I did not want to assume the repair worked just because the code changed. I used both the running game and the test file to verify that the fixes were actually working.
-- Describe at least one test you ran (manual or using pytest)  
-  and what it showed you about your code.
-- One manual test I ran was entering a very high guess when the secret number was lower. After the fix, the game correctly told me to go lower instead of higher, which showed that the `check_guess()` repair worked in the actual app. I also ran `python -m pytest` and used the regression test in `tests/test_game_logic.py`, which confirmed that the bug with comparing `9` to `"10"` was fixed in the code.
-- Did AI help you design or understand any tests? How?
-- Yes, AI helped me design the tests by pointing me toward the exact logic that was risky and by suggesting a regression test for the comparison bug. That helped me check both the player experience in the game and the logic in the test file. It made my testing more focused because I was verifying the exact bug instead of just clicking around randomly.
-
----
-
-## 4. What did you learn about Streamlit and state?
-
-- In your own words, explain why the secret number kept changing in the original app.
-- The secret number kept changing because Streamlit reruns the script after user actions, and values that are not managed correctly in `st.session_state` can get reset or handled inconsistently. At first, it looked like the UI was working, but the game logic underneath was not stable. This taught me that in Streamlit, state is what makes the app feel consistent between clicks.
-- How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
-- I would explain reruns as Streamlit running the script again every time a user types, clicks, or changes something on the page. Session state is the memory that keeps important values like the secret number, score, and attempts from disappearing during those reruns. Without session state, the app would act like it was starting over all the time.
-- What change did you make that finally gave the game a stable secret number?
-- The main change was keeping the secret number in `st.session_state.secret` and making sure the app always compared guesses against that stored value. I also removed the mixed string and integer handling that made the comparison logic unreliable on some turns. That made the game behave more predictably and stopped the guessing logic from acting random.
-
----
-
-## 5. Looking ahead: your developer habits
-
-- What is one habit or strategy from this project that you want to reuse in future labs or projects?
-  - This could be a testing habit, a prompting strategy, or a way you used Git.
-- One habit I want to keep using is testing the app from the user side before trusting the code. Running the app and trying obvious edge cases helped me find bugs faster than just reading the file. I also want to keep using AI to narrow down where a bug might be before I start editing, but only after I check the actual behavior myself.
-- What is one thing you would do differently next time you work with AI on a coding task?
-- Next time, I would verify the AI suggestions earlier and more often. One bad suggestion I had to reject was the idea that the app was mostly fine just because it launched and looked playable. I now know I need to treat AI suggestions like draft ideas, not final answers, and test each one before trusting it.
-- In one or two sentences, describe how this project changed the way you think about AI generated code.
-- This project changed the way I think about AI-generated code because now I see that code can run without actually being correct. AI was useful for brainstorming and debugging, but I still had to stay in control, reject misleading suggestions, and verify the final behavior myself.
+## Collaboration with AI
+AI helped me move faster in implementation and debugging. A helpful suggestion was to enforce structured JSON for AI hints and validate it before rendering; this directly improved safety and consistency. A flawed suggestion happened when a generated change looked correct but broke expectations in tests (fact-priority mismatch and UI styling side effects), so I had to verify with tests and manually refine the result.

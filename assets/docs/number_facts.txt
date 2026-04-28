@@ -1,0 +1,24 @@
+1 is the multiplicative identity.
+2 is the only even prime number.
+3 is the first odd prime number.
+4 is a perfect square (2^2).
+5 is the number of Platonic solids.
+6 is a perfect number (sum of divisors 1+2+3=6).
+7 is considered a lucky number in many cultures.
+8 is the number of bits in a byte.
+9 is a perfect square (3^2).
+10 is the base of the decimal system.
+11 is the smallest two-digit prime.
+12 is the number of months in a year.
+13 is considered unlucky in some cultures.
+14 is Valentine's Day date.
+15 is the number of days in a fortnight.
+16 is a perfect square (4^2).
+17 is a prime number.
+18 is the age of adulthood in many countries.
+19 is a prime number.
+20 is the number of fingers and toes.
+24 is the number of hours in a day.
+25 is a perfect square (5^2).
+50 is half of 100.
+100 is a perfect square (10^2).

@@ -1,132 +1,139 @@
-# AI-Enhanced Number Guesser: Educational Guessing Game with RAG
+# AI Number Story Coach: A Reliable, Game-Style Number Guessing System
 
-## Original Project Summary
-The original project was a "Game Glitch Investigator: The Impossible Guesser," a simple Streamlit-based number guessing game where players guess a secret number with hints and scoring. It was initially broken (AI-generated code with bugs like changing secret numbers and wrong hints), but was debugged, refactored, and tested to work correctly.
+## Title and Summary
+AI Number Story Coach is a Wordle-inspired number guessing game that combines classic game logic with an integrated AI guidance layer. Instead of acting like a separate chatbot, the AI is part of the turn-by-turn gameplay: after each valid guess, it explains the number, gives safe directional strategy, and helps the player narrow the range. This project matters because it demonstrates how to build an engaging AI product with guardrails, fallback behavior, testing, and observable reliability.
 
-## Enhanced Project Overview
-This enhanced version transforms the basic guessing game into an educational tool by integrating Retrieval-Augmented Generation (RAG) to provide AI-powered insights about numbers. After each guess, the AI retrieves relevant facts from a knowledge base and generates personalized educational content, making the game both entertaining and informative.
+## Original Project (Modules 1–3)
+The original project from Modules 1–3 was **Number Guessing Game**. Its initial goal was to let users guess a hidden number with basic high/low feedback and simple win/loss handling. It provided core mechanics (input, comparison, attempts) but had limited UX depth, minimal persistence, and no robust AI safety workflow.
 
-## Why It Matters
-This project demonstrates how AI can enhance simple applications to become more engaging and useful. By combining game mechanics with educational AI insights, it creates an end-to-end system that not only tests logical thinking but also teaches mathematical concepts and number properties.
+## What This Version Adds
+- Start screen with difficulty modes and clear rules
+- Wordle-style guess feedback cards
+- AI Number Story Coach with strict structured output
+- Local fact lookup for numbers (`1–500`) with special-fact priority
+- AI safety checker + deterministic fallback hint
+- Tabs for `Play`, `History`, and `Stats`
+- Light/Dark theme toggle and saved preference
+- Score model using difficulty, attempts, time, and AI usage
+- Persistent run artifacts (`.game_history.json`, `.game_stats.json`, `.ui_prefs.json`)
 
 ## Architecture Overview
+The architecture is documented with two diagrams:
+- Light architecture: [number-game-architecture-dark.svg](/Users/amenu/JAVA/applied-ai-system-project/number-game-architecture-light.svg)
+- Dark pipeline architecture: [number-game-architecture-light.svg](/Users/amenu/JAVA/applied-ai-system-project/number-game-architecture-dark.svg)
 
-```mermaid
-graph TD
-    A[User Input] --> B[Streamlit UI]
-    B --> C[Game Logic - logic_utils.py]
-    C --> D[Check Guess & Update Score]
-    D --> E[AI Insight Generation - ai_utils.py]
-    E --> F[RAG System]
-    F --> G[Knowledge Base Retrieval]
-    G --> H[LLM Generation]
-    H --> I[Educational Response]
-    I --> B
-    J[Testing & Logging] --> K[Unit Tests]
-    K --> L[Reliability Evaluation]
-    L --> M[Human Review]
-```
-
-**System Components:**
-- **Streamlit UI**: Handles user interaction, game state, and display
-- **Game Logic**: Core guessing mechanics and scoring
-- **RAG System**: Retrieves number facts and generates AI insights
-- **Knowledge Base**: Vector store of mathematical facts
-- **Testing Framework**: Automated tests and reliability checks
-
-**Data Flow:**
-1. User makes a guess → Game logic validates and provides hint
-2. AI retrieves relevant number facts → Generates educational insight
-3. Response displayed to user → Game continues or ends
-
-**Human Involvement:**
-- Initial setup and API key configuration
-- Review of AI-generated insights for quality
-- Testing and validation of system reliability
+High-level flow:
+1. Player submits a guess.
+2. Validator checks type/range/repetition.
+3. State engine updates attempts, history, range, and score state.
+4. Local fact retriever provides one concise fact for guessed number.
+5. AI Story Coach generates structured hint JSON.
+6. Safety checker validates schema, direction correctness, and no answer leakage.
+7. UI renders guess card + AI story card; stats/history persist to disk.
+8. Pytest + human review loop feeds improvements back into facts, rules, prompts, and UX.
 
 ## Setup Instructions
-
-1. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Configure API Key**:
-   - Get an OpenAI API key from https://platform.openai.com/
-   - Add it to `.env` file: `OPENAI_API_KEY=your_key_here`
-
-3. **Run the Application**:
-   ```bash
-   streamlit run app.py
-   ```
-
-4. **Run Tests**:
-   ```bash
-   python -m pytest
-   ```
+1. Clone the repo.
+2. Create and activate a Python environment.
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+4. (Optional) Add OpenAI key in `.env`:
+```bash
+OPENAI_API_KEY=your_openai_api_key
+```
+5. Run app:
+```bash
+python3 -m streamlit run app.py
+```
+6. Run tests:
+```bash
+python3 -m pytest -q
+```
 
 ## Sample Interactions
+### Example 1: Normal guided turn
+Input:
+- Difficulty: `Medium` (1–100)
+- Guess: `65`
 
-### Example 1: Winning Guess
-**Input:** Guess = 7, Secret = 7, Difficulty = Easy
-**AI Output:** "🤖 AI Insight: 7 is considered a lucky number in many cultures. It's also a prime number, meaning it has only two positive divisors: 1 and itself."
+Resulting AI output (shape):
+```json
+{
+  "numberFact": "65 is the product of 5 and 13.",
+  "direction": "higher",
+  "rangeAdvice": "Current practical range is 66 to 100.",
+  "targetClue": "The target is still hidden inside that range.",
+  "nextStrategy": "Use midpoint strategy to split the remaining range efficiently.",
+  "confidence": "medium"
+}
+```
 
-### Example 2: Too High Guess
-**Input:** Guess = 15, Secret = 10, Difficulty = Normal
-**AI Output:** "🤖 AI Insight: 15 is the number of days in a fortnight. While your guess was a bit high, knowing that 15 is 3 times 5 can help you think about factors when guessing!"
+### Example 2: Special fact priority
+Input:
+- Guess: `89`
 
-### Example 3: Educational Insight on Win
-**Input:** Guess = 6, Secret = 6, Difficulty = Easy
-**AI Output:** "🤖 AI Insight: Congratulations! 6 is a perfect number - the sum of its proper divisors (1, 2, 3) equals 6 itself. This makes it quite special in mathematics."
+Result:
+- System uses special local fact first: `89 is a prime number and also a Fibonacci number.`
+- AI guidance still gives safe direction/range strategy and does not reveal target.
 
-## Design Decisions
+### Example 3: Safety fallback path
+Input:
+- AI returns malformed or unsafe content (wrong direction or answer leak)
 
-**RAG Implementation:**
-- Chose RAG over simple LLM calls to ensure factual accuracy by grounding responses in a curated knowledge base
-- Used FAISS for vector storage due to its efficiency and ease of integration with LangChain
-- Limited knowledge base to 1-100 range to match game scope, with general math concepts
+Result:
+- Safety checker blocks AI response.
+- Fallback shown:
+  - “Your guess helped narrow the search. Use the higher/lower feedback and try a number near the middle of the remaining range.”
 
-**Trade-offs:**
-- **API Dependency:** Requires OpenAI API key, making it less self-contained but more powerful
-- **Latency:** AI calls add response time; mitigated with error handling and fallbacks
-- **Scope:** Focused on numbers 1-100 to keep knowledge base manageable
+## Design Decisions and Trade-offs
+- **Decision:** AI is integrated into gameplay, not separate chat.
+  - **Trade-off:** Tighter coupling to game state, but more useful and contextual hints.
+- **Decision:** Local number facts for deterministic behavior.
+  - **Trade-off:** Larger static data footprint, but prevents random fact drift.
+- **Decision:** Strict JSON contract and safety validation.
+  - **Trade-off:** Some AI responses are rejected, but reliability and trust improve.
+- **Decision:** File-based persistence.
+  - **Trade-off:** Simpler local deployment than database-backed storage.
 
-**Architecture Choices:**
-- Modular design with separate `ai_utils.py` for clean separation of concerns
-- Streamlit for UI to maintain simplicity and focus on AI integration
-- Comprehensive logging for debugging and reliability tracking
+
+## Reliability and Evaluation
+This project includes multiple reliability mechanisms:
+- Automated tests: `python3 -m pytest -q` currently passes (`13 passed`).
+- Confidence scoring: AI responses include `low | medium | high`, and `ai_evaluation.py` maps those labels to numeric scores for reporting.
+- Logging and error handling: gameplay and AI failures are logged; unsafe AI output is blocked and replaced with deterministic fallback.
+- Human evaluation: use [human_evaluation_template.md](/Users/amenu/JAVA/applied-ai-system-project/human_evaluation_template.md) for manual review of output quality and UX clarity.
+
+Example evaluation summary (from `python3 ai_evaluation.py`):
+- `6 out of 6 checks passed; confidence scores averaged 0.70.`
+- Reliability improved through schema validation, direction checks, and safe fallback behavior.
 
 ## Testing Summary
+What worked:
+- Range generation and win/loss logic
+- Invalid/repeated guess protection (no attempt consumption)
+- AI safety checks for no answer reveal and direction correctness
+- Fallback behavior when validation fails
+- Persistence read/write for history, stats, and theme preference
 
-**Automated Tests:** 7/7 tests passed, including new AI functionality tests. The system correctly validates game logic and AI insight generation.
+What did not work initially:
+- Theme CSS accidentally hid toolbar/button labels in light mode
+- Some fact behavior mismatches between “special” and fallback paths
 
-**Reliability Evaluation:** AI reliability scored 0.87 average across test queries. The system successfully retrieved and generated insights for 87% of test cases, with failures handled gracefully via error messages.
+What changed:
+- Refined CSS targeting and toolbar/button styling
+- Added special-fact prioritization and aligned tests accordingly
 
-**What Worked:** RAG effectively provides relevant, educational content. Error handling prevents crashes. Logging helps track AI performance.
-
-**What Didn't:** Initial API rate limiting caused occasional timeouts; resolved with retry logic and user feedback.
-
-**Lessons Learned:** AI integration requires careful error handling and fallback mechanisms. Testing AI outputs is challenging but crucial for reliability.
+Current status:
+- Test suite passing (`13 passed`)
 
 ## Reflection
+This project reinforced that strong AI products are systems. The most important work was in boundaries: defining what AI is allowed to do, validating outputs before display, and maintaining reliable fallbacks. It also showed how game design and reliability engineering can complement each other: engaging UX keeps users involved, while guardrails and tests keep outcomes trustworthy.
 
-**Limitations and Biases:**
-- Limited to English language and Western mathematical concepts
-- Knowledge base may contain cultural biases in "interesting" facts
-- AI responses can vary in creativity, potentially leading to inconsistent educational value
-- Requires internet connection and API access
-
-**Potential Misuse and Prevention:**
-- Could be misused to generate misleading mathematical information
-- Prevention: Factual knowledge base, confidence scoring, and human oversight in content creation
-- Rate limiting and input validation prevent abuse
-
-**Surprises in Testing:**
-- AI sometimes generated more creative responses than expected, occasionally straying from pure facts
-- Reliability was higher than anticipated (87%), but edge cases with unusual numbers revealed gaps
-
-**AI Collaboration:**
-- **Helpful Suggestion:** AI recommended using LangChain for RAG implementation, which simplified the vector store setup and retrieval logic significantly.
-- **Flawed Suggestion:** AI initially suggested a more complex fine-tuning approach, but RAG with a curated knowledge base proved more appropriate and easier to implement for this scope.
-
-- [ ] [If you choose to complete Challenge 4, insert a screenshot of your Enhanced Game UI here]
+## Repository Structure (Key Files)
+- [app.py](/Users/amenu/JAVA/applied-ai-system-project/app.py): Streamlit UI and gameplay orchestration
+- [logic_utils.py](/Users/amenu/JAVA/applied-ai-system-project/logic_utils.py): core game rules, scoring, persistence helpers
+- [ai_utils.py](/Users/amenu/JAVA/applied-ai-system-project/ai_utils.py): AI story generation, validation, fallback
+- [numberFacts.js](/Users/amenu/JAVA/applied-ai-system-project/numberFacts.js): local number fact system for `1–500`
+- [tests/test_game_logic.py](/Users/amenu/JAVA/applied-ai-system-project/tests/test_game_logic.py): reliability and logic tests

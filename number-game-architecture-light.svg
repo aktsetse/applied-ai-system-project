@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">AI Number Story Coach Architecture (Light)</title>
+  <desc id="desc">Single-screen architecture diagram showing game runtime flow, AI safety validation, persistence, and human/testing loop.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="9.5" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#29465b" />
+    </marker>
+    <style>
+      .bg { fill:#f4f7fb; }
+      .frame { fill:#ffffff; stroke:#d9e2ec; stroke-width:2; }
+      .lane { fill:#fbfcfe; stroke:#d9e2ec; stroke-width:2; }
+      .input { fill:#eef7f1; stroke:#4f8c73; stroke-width:2; }
+      .data { fill:#edf4fb; stroke:#4c79a8; stroke-width:2; }
+      .process { fill:#fff5e6; stroke:#c97f19; stroke-width:2; }
+      .decision { fill:#f8eef5; stroke:#a95587; stroke-width:2; }
+      .output { fill:#f1eefb; stroke:#7259c2; stroke-width:2; }
+      .review { fill:#f7f3ea; stroke:#9d7b42; stroke-width:2; }
+      .title { font:700 30px Arial,sans-serif; fill:#17212b; }
+      .subtitle { font:400 15px Arial,sans-serif; fill:#566473; }
+      .section { font:700 20px Arial,sans-serif; fill:#17212b; }
+      .label { font:700 16px Arial,sans-serif; fill:#17212b; }
+      .meta { font:600 12px Arial,sans-serif; fill:#5c6a79; letter-spacing:1px; }
+      .body { font:400 13px Arial,sans-serif; fill:#243240; }
+      .small { font:400 12px Arial,sans-serif; fill:#586574; }
+      .tiny { font:400 11px Arial,sans-serif; fill:#6a7784; }
+      .solid { stroke:#29465b; stroke-width:2.8; stroke-linecap:round; stroke-linejoin:round; fill:none; marker-end:url(#arrow); }
+      .dashed { stroke:#6b7c8d; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:8 7; fill:none; marker-end:url(#arrow); }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="900"/>
+  <rect class="frame" x="24" y="24" width="1552" height="852" rx="24"/>
+
+  <text class="title" x="60" y="72">AI Number Story Coach Game</text>
+  <text class="subtitle" x="60" y="98">Input → validation → state update → local facts + AI story → safety check → output, with testing and human review feedback.</text>
+
+  <rect class="lane" x="50" y="122" width="1500" height="490" rx="16"/>
+  <text class="section" x="72" y="154">Runtime Gameplay Flow</text>
+
+  <rect class="input" x="72" y="210" width="180" height="140" rx="14"/>
+  <text class="meta" x="90" y="236">INPUT</text>
+  <text class="label" x="90" y="260">Player Guess</text>
+  <text class="body" x="90" y="286">Guess + difficulty</text>
+  <text class="body" x="90" y="306">from Play tab.</text>
+
+  <rect class="process" x="286" y="210" width="220" height="140" rx="14"/>
+  <text class="meta" x="304" y="236">STEP 1</text>
+  <text class="label" x="304" y="260">Input Validator</text>
+  <text class="body" x="304" y="286">Checks type, range, and</text>
+  <text class="body" x="304" y="306">duplicate guesses.</text>
+
+  <rect class="process" x="540" y="210" width="230" height="140" rx="14"/>
+  <text class="meta" x="558" y="236">STEP 2</text>
+  <text class="label" x="558" y="260">State Engine</text>
+  <text class="body" x="558" y="286">Updates attempts, tiles,</text>
+  <text class="body" x="558" y="306">range, win/loss, score.</text>
+
+  <rect class="data" x="804" y="210" width="230" height="140" rx="14"/>
+  <text class="meta" x="822" y="236">STEP 3</text>
+  <text class="label" x="822" y="260">Local Fact Lookup</text>
+  <text class="body" x="822" y="286">Special fact first;</text>
+  <text class="body" x="822" y="306">generic fact fallback.</text>
+
+  <rect class="process" x="1068" y="210" width="220" height="140" rx="14"/>
+  <text class="meta" x="1086" y="236">STEP 4</text>
+  <text class="label" x="1086" y="260">AI Story Coach</text>
+  <text class="body" x="1086" y="286">Creates structured story</text>
+  <text class="body" x="1086" y="306">JSON for this guess.</text>
+
+  <rect class="decision" x="1322" y="192" width="210" height="176" rx="14"/>
+  <text class="meta" x="1340" y="218">STEP 5</text>
+  <text class="label" x="1340" y="242">Safety Check</text>
+  <text class="body" x="1340" y="268">Schema + direction</text>
+  <text class="body" x="1340" y="288">+ no-answer reveal.</text>
+  <text class="body" x="1340" y="308">Fallback if unsafe.</text>
+
+  <rect class="data" x="72" y="392" width="350" height="150" rx="14"/>
+  <text class="meta" x="90" y="418">PERSISTENCE</text>
+  <text class="label" x="90" y="442">History, Stats, Theme</text>
+  <text class="body" x="90" y="468">`.game_history.json`, `.game_stats.json`,</text>
+  <text class="body" x="90" y="488">and `.ui_prefs.json`.</text>
+
+  <rect class="process" x="456" y="392" width="360" height="150" rx="14"/>
+  <text class="meta" x="474" y="418">OBSERVABILITY</text>
+  <text class="label" x="474" y="442">Logging</text>
+  <text class="body" x="474" y="468">Tracks starts, guesses, invalid/repeated,</text>
+  <text class="body" x="474" y="488">AI checks, fallback, theme/tab changes.</text>
+
+  <rect class="output" x="850" y="392" width="682" height="150" rx="14"/>
+  <text class="meta" x="868" y="418">OUTPUT</text>
+  <text class="label" x="868" y="442">Updated UI + AI Story Card + Game Signals</text>
+  <text class="body" x="868" y="468">Play tab: guess tiles, attempts/progress, current possible range, and safe AI story for each valid guess.</text>
+  <text class="body" x="868" y="488">History/Stats tabs: persisted past games, streaks, win rate, and score trends.</text>
+
+  <path class="solid" d="M 252 280 L 286 280"/>
+  <path class="solid" d="M 506 280 L 540 280"/>
+  <path class="solid" d="M 770 280 L 804 280"/>
+  <path class="solid" d="M 1034 280 L 1068 280"/>
+  <path class="solid" d="M 1288 280 L 1322 280"/>
+  <path class="solid" d="M 1427 368 L 1427 392"/>
+  <path class="solid" d="M 247 392 L 247 350"/>
+  <path class="solid" d="M 636 392 L 636 350"/>
+  <path class="solid" d="M 1035 392 L 1035 350"/>
+
+  <rect class="lane" x="50" y="640" width="1500" height="208" rx="16"/>
+  <text class="section" x="72" y="672">Human Oversight and Reliability Validation</text>
+
+  <rect class="review" x="72" y="702" width="330" height="118" rx="14"/>
+  <text class="meta" x="90" y="728">TESTING</text>
+  <text class="label" x="90" y="752">Automated Tests</text>
+  <text class="body" x="90" y="776">Pytest checks rules, safety,</text>
+  <text class="body" x="90" y="796">fallback, and persistence.</text>
+
+  <rect class="review" x="436" y="702" width="360" height="118" rx="14"/>
+  <text class="meta" x="454" y="728">HUMAN CHECKPOINT</text>
+  <text class="label" x="454" y="752">Player / Reviewer</text>
+  <text class="body" x="454" y="776">Inspects AI hint quality, UX clarity,</text>
+  <text class="body" x="454" y="796">and theme readability.</text>
+
+  <rect class="review" x="830" y="702" width="700" height="118" rx="14"/>
+  <text class="meta" x="848" y="728">IMPROVEMENT LOOP</text>
+  <text class="label" x="848" y="752">Refine facts, prompts, guardrails, scoring, and UI</text>
+  <text class="body" x="848" y="776">Feedback updates number facts, AI policy checks, and front-end behavior in the next iteration.</text>
+
+  <path class="dashed" d="M 1305 542 L 1305 686 L 616 686 L 616 702"/>
+  <path class="dashed" d="M 237 702 L 237 686 L 830 686"/>
+  <path class="dashed" d="M 616 702 L 616 686 L 830 686"/>
+  <path class="dashed" d="M 1180 702 L 1180 686 L 1000 686"/>
+
+  <circle cx="72" cy="842" r="6" fill="#29465b"/>
+  <text class="tiny" x="86" y="846">Runtime flow</text>
+  <circle cx="180" cy="842" r="6" fill="#ffffff" stroke="#6b7c8d" stroke-width="2"/>
+  <text class="tiny" x="194" y="846">Testing + human feedback loop</text>
+</svg>

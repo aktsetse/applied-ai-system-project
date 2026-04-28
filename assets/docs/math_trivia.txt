@@ -1,0 +1,10 @@
+Mathematics is the study of numbers, patterns, and relationships.
+Even numbers are divisible by 2 without a remainder.
+Odd numbers always leave a remainder of 1 when divided by 2.
+A prime number has exactly two positive divisors: 1 and itself.
+A composite number has more than two divisors.
+A perfect square is an integer that is the square of another integer.
+A factorial is the product of all positive integers up to a given number.
+The decimal system is base 10 because humans have ten fingers.
+Zero is the only integer that is neither positive nor negative.
+The Fibonacci sequence begins 0, 1, 1, 2, 3, 5, 8, 13, 21.
