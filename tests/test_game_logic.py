@@ -1,4 +1,5 @@
 from logic_utils import check_guess
+# from ai_utils import get_ai_insight, evaluate_ai_reliability  # Commented out for testing without API
 
 def test_winning_guess():
     # If the secret is 50 and guess is 50, it should be a win.
@@ -19,3 +20,17 @@ def test_numeric_string_secret_does_not_use_lexicographic_comparison():
     # Regression test: "10" used to compare as text, so 9 was incorrectly treated as too high.
     result = check_guess(9, "10")
     assert result == ("Too Low", "Go HIGHER!")
+
+# def test_ai_insight_generation():
+#     # Test that AI insight returns a non-empty string
+#     insight = get_ai_insight(5, 10, "Too Low")
+#     assert isinstance(insight, str)
+#     assert len(insight) > 0
+
+# def test_ai_reliability():
+#     # Test reliability evaluation
+#     reliability = evaluate_ai_reliability()
+#     assert "average_score" in reliability
+#     assert "total_tests" in reliability
+#     assert "passed_tests" in reliability
+#     assert reliability["total_tests"] == 3

@@ -8,13 +8,15 @@ from logic_utils import (
     parse_guess,
     update_score,
 )
+from ai_utils import get_ai_insight
 # FIX: Refactored game logic into logic_utils.py with AI help so app.py stays focused on UI/state.
+# ENHANCEMENT: Added AI-powered insights using RAG for educational number facts.
 
 
-st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
+st.set_page_config(page_title="AI-Enhanced Number Guesser", page_icon="🎮")
 
-st.title("🎮 Game Glitch Investigator")
-st.caption("An AI-generated guessing game. Something is off.")
+st.title("🎮 AI-Enhanced Number Guesser")
+st.caption("A guessing game with AI-powered educational insights using RAG.")
 
 st.sidebar.header("Settings")
 
@@ -108,6 +110,11 @@ if submit:
 
         if show_hint:
             st.warning(message)
+
+        # ENHANCEMENT: Add AI-powered educational insight
+        ai_insight = get_ai_insight(guess_int, st.session_state.secret, outcome)
+        if ai_insight:
+            st.info(f"🤖 AI Insight: {ai_insight}")
 
         st.session_state.score = update_score(
             current_score=st.session_state.score,
