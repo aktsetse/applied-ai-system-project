@@ -1,7 +1,25 @@
 # AI Number Story Coach: A Reliable, Game-Style Number Guessing System
 
+## Platform Landing Page
+![Platform Landing Page](./Landingpage.png)
+
+## Video Demo
+https://www.loom.com/share/f6e5144e2f7844da9d0084f31c57d83b
+
+## Slides
+[View Slides (PDF)](./slides.pdf)
+
 ## Title and Summary
 AI Number Story Coach is a Wordle-inspired number guessing game that combines classic game logic with an integrated AI guidance layer. Instead of acting like a separate chatbot, the AI is part of the turn-by-turn gameplay: after each valid guess, it explains the number, gives safe directional strategy, and helps the player narrow the range. This project matters because it demonstrates how to build an engaging AI product with guardrails, fallback behavior, testing, and observable reliability.
+
+## Platform Landing Page
+
+
+## Video Demo
+https://www.loom.com/share/f6e5144e2f7844da9d0084f31c57d83b
+
+## Slides
+/Users/amenu/JAVA/applied-ai-system-project/AI_Number_Story_Coach_Building_a_Reliable_Applied_AI_Game_System.pdf
 
 ## Original Project (Modules 1–3)
 The original project from Modules 1–3 was **Number Guessing Game**. Its initial goal was to let users guess a hidden number with basic high/low feedback and simple win/loss handling. It provided core mechanics (input, comparison, attempts) but had limited UX depth, minimal persistence, and no robust AI safety workflow.
