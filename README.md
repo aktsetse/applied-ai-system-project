@@ -1,25 +1,18 @@
 # AI Number Story Coach: A Reliable, Game-Style Number Guessing System
 
 ## Platform Landing Page
-![Platform Landing Page](./Landingpage.png)
+![Platform Landing Page](./assets/screenshots/landingpage.png)
 
 ## Video Demo
-https://www.loom.com/share/f6e5144e2f7844da9d0084f31c57d83b
+[![Watch Loom Demo](https://cdn.loom.com/sessions/thumbnails/f6e5144e2f7844da9d0084f31c57d83b-with-play.gif)](https://www.loom.com/share/f6e5144e2f7844da9d0084f31c57d83b)
+[Watch on Loom](https://www.loom.com/share/f6e5144e2f7844da9d0084f31c57d83b)
 
 ## Slides
-[View Slides (PDF)](./slides.pdf)
+[![Slides Preview](./assets/screenshots/slides-preview.png)](./assets/slides/slides.pdf)
+[View Slides (PDF)](./assets/slides/slides.pdf)
 
 ## Title and Summary
 AI Number Story Coach is a Wordle-inspired number guessing game that combines classic game logic with an integrated AI guidance layer. Instead of acting like a separate chatbot, the AI is part of the turn-by-turn gameplay: after each valid guess, it explains the number, gives safe directional strategy, and helps the player narrow the range. This project matters because it demonstrates how to build an engaging AI product with guardrails, fallback behavior, testing, and observable reliability.
-
-## Platform Landing Page
-
-
-## Video Demo
-https://www.loom.com/share/f6e5144e2f7844da9d0084f31c57d83b
-
-## Slides
-/Users/amenu/JAVA/applied-ai-system-project/AI_Number_Story_Coach_Building_a_Reliable_Applied_AI_Game_System.pdf
 
 ## Original Project (Modules 1–3)
 The original project from Modules 1–3 was **Number Guessing Game**. Its initial goal was to let users guess a hidden number with basic high/low feedback and simple win/loss handling. It provided core mechanics (input, comparison, attempts) but had limited UX depth, minimal persistence, and no robust AI safety workflow.
@@ -37,8 +30,8 @@ The original project from Modules 1–3 was **Number Guessing Game**. Its initia
 
 ## Architecture Overview
 The architecture is documented with two diagrams:
-- Light architecture: [number-game-architecture-dark.svg](/Users/amenu/JAVA/applied-ai-system-project/number-game-architecture-light.svg)
-- Dark pipeline architecture: [number-game-architecture-light.svg](/Users/amenu/JAVA/applied-ai-system-project/number-game-architecture-dark.svg)
+- Light architecture: [number-game-architecture-light.svg](./assets/diagrams/svg/number-game-architecture-light.svg)
+- Dark pipeline architecture: [number-game-architecture-dark.svg](./assets/diagrams/svg/number-game-architecture-dark.svg)
 
 High-level flow:
 1. Player submits a guess.
@@ -121,10 +114,10 @@ This project includes multiple reliability mechanisms:
 - Automated tests: `python3 -m pytest -q` currently passes (`13 passed`).
 - Confidence scoring: AI responses include `low | medium | high`, and `ai_evaluation.py` maps those labels to numeric scores for reporting.
 - Logging and error handling: gameplay and AI failures are logged; unsafe AI output is blocked and replaced with deterministic fallback.
-- Human evaluation: use [human_evaluation_template.md](/Users/amenu/JAVA/applied-ai-system-project/human_evaluation_template.md) for manual review of output quality and UX clarity.
+- Human evaluation: use [human_evaluation_template.md](./human_evaluation_template.md) for manual review of output quality and UX clarity.
 
 Example evaluation summary (from `python3 ai_evaluation.py`):
-- `6 out of 6 checks passed; confidence scores averaged 0.70.`
+- `9 out of 9 checks passed; confidence scores averaged 0.70.`
 - Reliability improved through schema validation, direction checks, and safe fallback behavior.
 
 ## Testing Summary
